@@ -189,9 +189,14 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen> {
     // Stop playback immediately
     await _controller?.pause();
     
-    // Reset orientation and UI mode before popping
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    // Reset UI mode first
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+    // Reset orientation
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    
+    // Small delay to ensure orientation change processes
+    await Future.delayed(const Duration(milliseconds: 100));
     
     if (mounted) {
       setState(() => _canPop = true);

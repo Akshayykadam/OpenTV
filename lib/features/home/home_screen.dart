@@ -161,8 +161,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                   const SizedBox(height: AppSpacing.md),
                 
-                // Country Selector
-                _buildCountrySelector(),
+                // Search Bar
+                _buildSearchBar(),
                 const SizedBox(height: AppSpacing.md),
                 
                 // Continue Watching / Recently watched
@@ -286,17 +286,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => const SearchScreen(),
-              ),
-            );
-          },
-          icon: const Icon(Icons.search_rounded),
-          tooltip: 'Search',
-        ),
+        _buildCompactCountrySelector(),
         const SizedBox(width: AppSpacing.sm),
       ],
     );
@@ -324,7 +314,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildCountrySelector() {
+  Widget _buildCompactCountrySelector() {
     final availableCountriesAsync = ref.watch(availableCountriesProvider);
     final selectedCountryCode = ref.watch(selectedCountryProvider);
 
@@ -348,7 +338,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+          padding: const EdgeInsets.only(right: AppSpacing.sm),
           child: GestureDetector(
             onTap: () {
               showModalBottomSheet(
@@ -360,41 +350,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             },
             child: Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: AppSpacing.sm,
+                horizontal: AppSpacing.sm,
+                vertical: 6,
               ),
               decoration: BoxDecoration(
                 color: AppColors.surfaceElevated,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.05),
+                  color: Colors.white.withValues(alpha: 0.1),
                 ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                   Container(
-                    width: 24, height: 24,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.05),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.public_rounded,
-                      size: 14,
-                      color: AppColors.textPrimary,
-                    ),
-                   ),
-                   const SizedBox(width: AppSpacing.sm),
                    Text(
-                     selectedCountry?.name ?? 'All Countries',
-                     style: AppTypography.labelLarge.copyWith(
-                       color: AppColors.textPrimary,
-                       fontWeight: FontWeight.w600,
+                     selectedCountry?.flag ?? '🌍',
+                     style: const TextStyle(fontSize: 14),
+                   ),
+                   const SizedBox(width: AppSpacing.xs),
+                   ConstrainedBox(
+                     constraints: const BoxConstraints(maxWidth: 80),
+                     child: Text(
+                       selectedCountry?.name ?? 'All',
+                       style: AppTypography.labelLarge.copyWith(
+                         color: AppColors.textPrimary,
+                         fontWeight: FontWeight.w600,
+                       ),
+                       overflow: TextOverflow.ellipsis,
                      ),
                    ),
-                   const SizedBox(width: AppSpacing.sm),
+                   const SizedBox(width: AppSpacing.xs),
                    Icon(
                      Icons.keyboard_arrow_down_rounded,
                      size: 16,
@@ -408,6 +393,56 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       },
       loading: () => const SizedBox.shrink(),
       error: (error, stack) => const SizedBox.shrink(),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => const SearchScreen(),
+            ),
+          );
+        },
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: 12, // Slightly taller for better touch target
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.surfaceElevated2,
+            borderRadius: AppRadius.pillRadius,
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.search_rounded,
+                size: 22,
+                color: AppColors.textSecondary,
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Text(
+                  'Search for channels...',
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.mic_none_rounded,
+                size: 22,
+                color: AppColors.textSecondary,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

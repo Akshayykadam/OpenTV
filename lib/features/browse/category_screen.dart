@@ -2,6 +2,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../core/theme/design_tokens.dart';
 import '../../data/models/channel.dart';
 import '../browse/widgets/channel_card.dart';
@@ -43,7 +44,11 @@ class CategoryScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => PlayerScreen(channel: channel),
                   ),
-                );
+                ).then((_) {
+                  // Force portrait mode when returning
+                  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+                  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+                });
             },
           );
         },

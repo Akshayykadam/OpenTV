@@ -4,6 +4,7 @@ library;
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/design_tokens.dart';
 import '../../data/models/channel.dart';
@@ -176,7 +177,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               MaterialPageRoute(
                 builder: (_) => PlayerScreen(channel: channel),
               ),
-            );
+            ).then((_) {
+               // Force portrait mode when returning
+               SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+               SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+            });
           },
         );
       },
