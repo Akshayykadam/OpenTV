@@ -170,7 +170,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ChannelCarousel(
                     title: 'Continue Watching',
                     channels: recentChannels,
-                    onChannelTap: _playChannel,
+                    onChannelTap: (channel) => _playChannel(channel, recentChannels),
                   ),
                   const SizedBox(height: AppSpacing.lg),
                 ],
@@ -180,7 +180,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ChannelCarousel(
                     title: 'Your Favorites',
                     channels: favoriteChannels,
-                    onChannelTap: _playChannel,
+                    onChannelTap: (channel) => _playChannel(channel, favoriteChannels),
                   ),
                   const SizedBox(height: AppSpacing.lg),
                 ],
@@ -190,7 +190,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ChannelCarousel(
                     title: 'Trending',
                     channels: trendingChannels,
-                    onChannelTap: _playChannel,
+                    onChannelTap: (channel) => _playChannel(channel, trendingChannels),
                     onSeeAll: () => _openCategory('Trending', filteredChannels),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -201,7 +201,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ChannelCarousel(
                     title: 'News',
                     channels: newsChannels,
-                    onChannelTap: _playChannel,
+                    onChannelTap: (channel) => _playChannel(channel, newsChannels),
                     onSeeAll: () => _openCategory('News', filteredChannels.where((c) => c.category?.toLowerCase() == 'news').toList()),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -212,7 +212,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ChannelCarousel(
                     title: 'Sports',
                     channels: sportsChannels,
-                    onChannelTap: _playChannel,
+                    onChannelTap: (channel) => _playChannel(channel, sportsChannels),
                     onSeeAll: () => _openCategory('Sports', filteredChannels.where((c) => c.category?.toLowerCase() == 'sports').toList()),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -223,7 +223,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ChannelCarousel(
                     title: 'Entertainment',
                     channels: entertainmentChannels,
-                    onChannelTap: _playChannel,
+                    onChannelTap: (channel) => _playChannel(channel, entertainmentChannels),
                     onSeeAll: () => _openCategory('Entertainment', filteredChannels.where((c) => c.category?.toLowerCase() == 'entertainment').toList()),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -234,7 +234,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ChannelCarousel(
                     title: 'Movies',
                     channels: moviesChannels,
-                    onChannelTap: _playChannel,
+                    onChannelTap: (channel) => _playChannel(channel, moviesChannels),
                     onSeeAll: () => _openCategory('Movies', filteredChannels.where((c) => c.category?.toLowerCase() == 'movies').toList()),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -245,7 +245,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ChannelCarousel(
                     title: 'Music',
                     channels: musicChannels,
-                    onChannelTap: _playChannel,
+                    onChannelTap: (channel) => _playChannel(channel, musicChannels),
                     onSeeAll: () => _openCategory('Music', filteredChannels.where((c) => c.category?.toLowerCase() == 'music').toList()),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -256,7 +256,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ChannelCarousel(
                     title: 'Kids',
                     channels: kidsChannels,
-                    onChannelTap: _playChannel,
+                    onChannelTap: (channel) => _playChannel(channel, kidsChannels),
                     onSeeAll: () => _openCategory('Kids', filteredChannels.where((c) => c.category?.toLowerCase() == 'kids').toList()),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -292,10 +292,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  void _playChannel(Channel channel) {
+  void _playChannel(Channel channel, [List<Channel>? channelList]) {
+    HapticFeedback.lightImpact();
+    final index = channelList?.indexOf(channel) ?? 0;
+    
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => PlayerScreen(channel: channel),
+        builder: (_) => PlayerScreen(
+          channel: channel,
+          channelList: channelList,
+          currentIndex: index,
+        ),
       ),
     ).then((_) async {
       // Force orientation reset when returning, just in case

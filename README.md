@@ -51,14 +51,20 @@
 - **🖼️ Channel Logos**: High-quality logos fetched from the IPTV database
 - **🔄 Pull to Refresh**: Refresh channel data with a simple pull gesture
 - **🦴 Skeleton Loading**: Beautiful loading states while content loads
+- **📳 Haptic Feedback**: Subtle vibrations on all interactive elements
 
 ### 🎬 Video Player
 - **📺 Fullscreen Immersive**: Automatic landscape mode with hidden system UI
-- **🔊 System Volume Control**: Control volume with physical buttons + on-screen slider
-- **▶️ Play/Pause**: Large, touch-friendly controls
+- **🔊 Swipe Volume Control**: Swipe up/down on right side to adjust volume
+- **☀️ Swipe Brightness Control**: Swipe up/down on left side to adjust brightness
+- **🤏 Pinch to Zoom**: Pinch to toggle between fit-to-screen and fill-screen modes
+- **📺 Picture-in-Picture**: Continue watching in a floating window (Android 8.0+)
+- **⏭️ Channel Quick-Switch**: Swipe left/right or use prev/next buttons to switch channels
+- **🔄 Auto-Retry**: Automatic reconnection with countdown on stream failure
 - **🔴 Live Indicator**: Clear "LIVE" badge during playback
 - **📡 Stream Quality Badge**: See the current stream quality
 - **❤️ Quick Favorite**: Add channels to favorites directly from the player
+- **💡 Screen Always On**: Screen stays on while watching
 
 ### ⚡ Performance
 - **💾 Smart Caching**: 6-hour channel data cache with automatic refresh

@@ -4,6 +4,7 @@ library;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:shimmer/shimmer.dart';
 import '../../../core/theme/design_tokens.dart';
@@ -41,7 +42,10 @@ class _ChannelCardState extends State<ChannelCard> {
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: GestureDetector(
-        onTap: widget.onTap,
+        onTap: () {
+          HapticFeedback.lightImpact();
+          widget.onTap?.call();
+        },
         onLongPress: widget.onLongPress,
         child: AnimatedContainer(
           duration: AppMotion.fast,
