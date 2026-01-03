@@ -76,7 +76,7 @@
 
 ## 📸 Screenshots
 
-> *Coming soon - Add your app screenshots here*
+> *Coming soon*
 
 ---
 
